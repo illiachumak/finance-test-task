@@ -1,26 +1,39 @@
-import React, { useEffect, useState } from "react";
+import { useEffect} from "react";
+import { useAppDispatch, useAppSelector } from "./redux/store";
 import { socket } from "./webSockets";
+import { setTickerList, toggleTicker } from "./redux/Slices/contentSlice";
+import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
 import './index.css'
-const TickerTable: React.FC = () => {
-  const [tickers, setTickers] = useState<any[]>([]);
+import { Ticker } from "./utils/types/tickerType";
+
+
+const TickerTable = () => {
+  
+  const dispatch = useAppDispatch()
+  const { tickerList } = useAppSelector(state => state.cont)
+
+  const handleToggleTicker = (ticker: Ticker) => {
+    dispatch(toggleTicker({ ticker: ticker.ticker }))
+  }
 
   useEffect(() => {
     socket.emit("start")
     socket.on("ticker", (data) => {
-      console.log(data)
-      setTickers(data);
-    });
+      dispatch(setTickerList(data))
+    })
 
     return () => {
       socket.off("ticker");
     };
-  }, []);
+  }, [dispatch]);
 
-  return (<>
-    <div className="w-full mt-6 ml-4">
+  return (
+    <>
+    <div className="w-full mt-6 pl-4 pr-4">
       <table className="table table-zebra">
         <thead>
           <tr className="bg-gray-100">
+            <th></th>
             <th className="py-2 px-3 text-left">Ticker</th>
             <th className="py-2 px-3 text-left">Exchange</th>
             <th className="py-2 px-3 text-left">Price</th>
@@ -32,22 +45,32 @@ const TickerTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {tickers.map((ticker, index) => (
+          {tickerList.map((ticker, index) => (
             <tr key={index} className="border-b">
+              <td><input type="checkbox" className="toggle" checked={ticker.active} onChange={() => handleToggleTicker(ticker)}/></td>
               <td className="py-2 px-3">{ticker.ticker}</td>
               <td className="py-2 px-3">{ticker.exchange}</td>
               <td className="py-2 px-3">{ticker.price}</td>
               <td className="py-2 px-3">{ticker.change}</td>
-              <td className="py-2 px-3">{ticker.change_percent}</td>
+              <td className="py-2 px-3 flex flex-row items-center mt-2">
+                {ticker.change_percent}
+                {ticker.price_change === "increase" ? (
+                  <FaArrowTrendUp className="text-green-500 ml-1" />
+                ) : ticker.price_change === "decrease" ? (
+                  <FaArrowTrendDown className="text-red-500 ml-1" />
+                ) : null}
+              </td>
               <td className="py-2 px-3">{ticker.dividend}</td>
               <td className="py-2 px-3">{ticker.yield}</td>
-              <td className="py-2 px-3">{new Date(ticker.last_trade_time).toLocaleDateString()}</td>
+              <td className="py-2 px-3">
+                {ticker.last_trade_time && new Date(ticker.last_trade_time).toLocaleDateString()}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-    </>
+  </>
   );
 };
 
