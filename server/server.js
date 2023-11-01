@@ -71,6 +71,7 @@ app.get('/', function(req, res) {
 });
 
 socketServer.on('connection', (socket) => {
+  console.log("Connected")
   socket.on('start', () => {
     trackTickers(socket);
   });
