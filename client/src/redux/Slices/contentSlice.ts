@@ -37,10 +37,13 @@ export const contSlice = createSlice({
         socket.emit("toggleTicker", action.payload.ticker)
       }
     },
+    setSettings: (_, action) => {
+      socket.emit("setInterval", action.payload)
+    },
   },
 });
 
 
-export const {setTickerList, toggleTicker} = contSlice.actions;
+export const {setTickerList, toggleTicker, setSettings} = contSlice.actions;
 
 export default contSlice.reducer;

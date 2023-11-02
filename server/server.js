@@ -102,7 +102,6 @@ app.get('/', function(req, res) {
 });
 
 socketServer.on('connection', (socket) => {
-  console.log("Connected");
 
   socket.on('start', () => {
     trackTickers(socket);
@@ -116,11 +115,6 @@ socketServer.on('connection', (socket) => {
     }
   });
 
-
-  socket.on('setInterval', (interval) => {
-
-    trackTickers(socket);
-  });
 });
 
 server.listen(PORT, () => {
