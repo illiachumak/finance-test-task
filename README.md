@@ -1,8 +1,8 @@
 
 ### Tasks Done:
-  main tasks:
+ ## main tasks:
 1. All completed
- bonus tasks:
+ ## bonus tasks:
 1. any additional visual effects to highlight positive or negative changes in the prices
 2. the possibility to switch on/off tickers by user
 4. the possibility to specify interval time by user
