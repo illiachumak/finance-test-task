@@ -5,7 +5,7 @@
  ## bonus tasks:
 1. any additional visual effects to highlight positive or negative changes in the prices
 2. the possibility to switch on/off tickers by user
-4. the possibility to specify interval time by user
+3. the possibility to specify interval time by user
 
 
 ## testing: Not at all(Need more time and knowledge to study how to test my code)
