@@ -33,7 +33,7 @@ const TickerTable = () => {
         <tbody>
           {tickerList.map((ticker, index) => (
             <tr key={index} className="border-b">
-              <td><input type="checkbox" className="toggle" checked={ticker.active} onChange={() => handleToggleTicker(ticker)}/></td>
+              <td><input type="checkbox" data-testid="test-checkbox" className="toggle" checked={ticker.active} onChange={() => handleToggleTicker(ticker)}/></td>
               <td className="py-2 px-3">{ticker.ticker}</td>
               <td className="py-2 px-3">{ticker.exchange}</td>
               <td className="py-2 px-3">{ticker.price}</td>
